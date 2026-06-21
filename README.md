@@ -1,19 +1,13 @@
 # Identity Risk Console
 
 Cross-platform identity risk dashboard. Backend (FastAPI + Pandas + NetworkX)
-serves a deterministic risk-scoring engine; frontend (React + Vite + React Flow)
-renders the risk register, the privilege graph, and remediation playbooks.
-
-This covers **Phase 2 (API & Backend)** and **Phase 3 (Frontend & Dashboard)**
-from the hackathon plan. Phase 1 (data generator / graph builder / risk engine
-your teammates own) is stubbed with realistic mock data so you can build and
-demo independently — see `backend/DATA_CONTRACT.md` for the handoff schema.
+gives a deterministic risk-scoring engine; frontend (React + Vite + React Flow)
+shows the risk and the employee's reach in graph and remediation advice.
 
 ## What’s included
 
 - `backend/` — FastAPI service, mock data generator, graph builder, risk engine, and self-check script
-- `frontend/` — React + Vite dashboard with the risk register, identity graph, and remediation panel
-- `backend/DATA_CONTRACT.md` — schema contract for swapping in real Phase-1 CSVs
+- `frontend/` — React + Vite dashboard with the risk table, identity graph, and remediation panel
 
 ## Quick start
 
@@ -21,7 +15,7 @@ demo independently — see `backend/DATA_CONTRACT.md` for the handoff schema.
 ```bash
 cd backend
 pip install -r requirements.txt
-python mock_data_generator.py   # only needed once, or after teammates' CSVs change
+python mock_data_generator.py   #if you want to generate your datasets with variation
 uvicorn main:app --reload --port 8000
 ```
 
@@ -59,22 +53,20 @@ uvicorn main:app --reload --port 8000
 ## What's in the dashboard
 
 1. **Risk Register** (left pane) — sortable table of all identities, risk
-   score shown as a radial dial, filterable by tier or "offboarding gaps only,"
-   searchable by name/ID.
+   score shown as a radial dial, filterable by tier
 2. **Identity graph** (right pane, tab 1) — click any row to see that
    identity's full reachable privilege graph via React Flow. The path to any
-   admin/role node it can reach is highlighted in red — this is the "hidden
-   nested-group" reveal from the demo script.
+   admin/role node it can reach is highlighted in red 
 3. **Remediation playbook** (right pane, tab 2) — concrete, copyable CLI
    commands generated from which risk rules fired for that identity.
 
 ## Backend files
 
-- `mock_data_generator.py` — fake data generator with the hackathon-sized CSV set
-- `graph_builder.py` — NetworkX privilege graph and effective privilege resolution
-- `risk_engine.py` — deterministic rule engine used for scoring
-- `main.py` — FastAPI app wiring the endpoints together
-- `self_eval.py` — success-criteria checker against the live data
+- `mock_data_generator.py` — mock data generator in csv format
+- `graph_builder.py` — NetworkX graph used for privilege display
+- `risk_engine.py` — rule engine used for scoring
+- `main.py` — FastAPI app
+
 
 ## Project layout
 
@@ -83,9 +75,8 @@ backend/
   mock_data_generator.py   # Faker-based fake data, 4 risk cases injected
   graph_builder.py         # NetworkX privilege graph + nx.descendants()
   risk_engine.py            # deterministic Option-B scoring rules
-  main.py                  # FastAPI app, 3 main endpoints + stats/refresh
-  DATA_CONTRACT.md         # schema doc for Phase-1 teammates
-  data/                    # generated CSVs land here
+  main.py                  # FastAPI app, 3 main endpoints and stats/refresh
+  data/                    # generated CSVs folders
 
 frontend/
   src/components/
