@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #0B0E11;
+  color: #E6E9EF;
+  font-family: 'Inter', ui-sans-serif, system-ui;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #3DDBFF;
+  color: #0B0E11;
+}
+
+/* thin scrollbars to match the operational feel */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #262C38; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #5A6275; }
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(255, 59, 59, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(255, 59, 59, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 59, 59, 0); }
+}
+.pulse-critical { animation: pulse-ring 2s infinite; }
