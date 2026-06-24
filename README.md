@@ -4,12 +4,12 @@ Cross-platform identity risk dashboard. Backend (FastAPI + Pandas + NetworkX)
 gives a deterministic risk-scoring engine; frontend (React + Vite + React Flow)
 shows the risk and the employee's reach in graph and remediation advice.
 
-## What’s included
-
-- `backend/` — FastAPI service, mock data generator, graph builder, risk engine, and self-check script
+## Two-tier architecture
+ 
+- `backend/` — FastAPI service, mock data generator, graph builder, risk engine
 - `frontend/` — React + Vite dashboard with the risk table, identity graph, and remediation panel
 
-## Quick start
+## How to run:
 
 **Terminal 1 — backend:**
 ```bash
@@ -27,20 +27,18 @@ npm run dev
 ```
 
 Open http://localhost:5173. The frontend talks to the backend at
-`http://localhost:8000` (configurable via `frontend/.env`).
+`http://localhost:8000` (configurable via `frontend/.env.example`).
 
 ## Backend setup and checks
 
 ```bash
 cd backend
 pip install -r requirements.txt
-python mock_data_generator.py
-python self_eval.py
 uvicorn main:app --reload --port 8000
 ```
 
 `python mock_data_generator.py` creates the CSVs in `backend/data/`.
-`python self_eval.py` prints the pass/fail table for the five success criteria.
+
 
 ## Backend endpoints
 
@@ -89,35 +87,4 @@ frontend/
   src/lib/api.js           # fetch wrapper for all backend calls
 ```
 
-## Demo flow that matches the strategy doc
 
-1. Open the register, sorted by risk score — `cross_platform_blast_radius`
-   and `offboarding_gap` cases sit at the top (score 95).
-2. Click `svc-etl-prod` (a `no_hr_owner` service account, score 80).
-3. Switch to the **Identity graph** tab — show the red-highlighted path
-   from the service account through nested AWS groups to `GlobalAdmin`
-   and `S3FullAccess`.
-4. Switch to **Remediation** — show the generated command to pull it out
-   of the privileged group.
-5. Filter the register to "Offboarding gaps only" to show the 6 contractors
-   whose access wasn't revoked after termination.
-
-## Swapping in real Phase-1 data
-
-Once your teammates' generator/risk-engine is ready:
-1. Have them match the column names in `backend/DATA_CONTRACT.md`.
-2. Drop their CSVs into `backend/data/`, overwriting the mock ones.
-3. `POST http://localhost:8000/api/refresh` (or just restart uvicorn).
-
-No frontend or backend code changes needed — the contract is the seam.
-
-## Standalone backend sanity checks
-
-```bash
-cd backend
-python graph_builder.py
-python risk_engine.py
-```
-
-These print the effective privileges for injected service accounts and the top
-riskiest identities without starting the server.
